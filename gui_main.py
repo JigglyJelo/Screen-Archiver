@@ -1,5 +1,6 @@
 import sys
 import os
+import json
 
 # --- THE .PYW CRASH PREVENTER ---
 sys.stdout = open(os.devnull, 'w')
@@ -30,6 +31,8 @@ class RecorderApp(ctk.CTk):
         self.start_time = None
         self.timer_id = None
 
+        self.settings_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "settings.json")
+
         self.settings = {
             "fps": "1/5", "crf": "38", "width_px": "960",
             "crop_t": "0", "crop_b": "0", "crop_l": "0", "crop_r": "0",
@@ -38,6 +41,16 @@ class RecorderApp(ctk.CTk):
             "capture_mode": "Video & Picture", "screenshot_interval": "5",
             "save_dir": os.path.join(os.path.expanduser("~"), "Videos")
         }
+        
+        if os.path.exists(self.settings_file):
+            try:
+                with open(self.settings_file, "r") as f:
+                    saved_settings = json.load(f)
+                    # Update defaults with the saved values
+                    self.settings.update(saved_settings)
+            except Exception as e:
+                pass
+                #print(f"Could not load settings file: {e}")
 
         self.start_btn = ctk.CTkButton(self, text="▶ Record", fg_color="green", hover_color="darkgreen", font=("Arial", 22, "bold"), height=60, command=self.toggle_recording)
         self.start_btn.pack(fill="x", padx=20, pady=(20, 10))

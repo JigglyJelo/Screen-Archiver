@@ -1,3 +1,4 @@
+import json
 import customtkinter as ctk
 from customtkinter import filedialog
 
@@ -152,4 +153,10 @@ class SettingsWindow(ctk.CTkToplevel):
             "capture_mode": self.mode_menu.get(),
             "screenshot_interval": self.ss_interval.get()
         })
+        try:
+            with open(self.master.settings_file, "w") as f:
+                json.dump(self.master.settings, f, indent=4)
+        except Exception as e:
+            #print(f"Could not save settings file: {e}")
+            pass
         self.destroy()
