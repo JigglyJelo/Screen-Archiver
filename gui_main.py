@@ -69,6 +69,21 @@ class RecorderApp(ctk.CTk):
 
     def update_timer(self):
         if self.recording_process:
+            # --- NEW: Check if the FFmpeg process has unexpectedly crashed ---
+            if self.recording_process.poll() is not None:
+                # The process died (e.g., folder was deleted). Clean up the UI.
+                self.stop_recording()
+                
+                # Override the "Saved!" text from stop_recording with an error state
+                self.start_btn.configure(text="Error: Process Died", fg_color="red", hover_color="darkred")
+                
+                # Reset back to normal after a few seconds
+                self.after(3000, lambda: self.start_btn.configure(
+                    text="▶ Record", fg_color="green", hover_color="darkgreen"
+                ))
+                return
+            # -----------------------------------------------------------------
+
             elapsed = datetime.now() - self.start_time
             total_seconds = int(elapsed.total_seconds())
             
