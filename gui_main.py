@@ -33,8 +33,9 @@ class RecorderApp(ctk.CTk):
         self.settings = {
             "fps": "1/5", "crf": "38", "width_px": "960",
             "crop_t": "0", "crop_b": "0", "crop_l": "0", "crop_r": "0",
-            "ext": ".mp4", "color": "8-Shade Gray", 
-            "preset": "veryslow", "tune": "stillimage",
+            "ext": ".mkv", "img_ext": ".jpg", "img_q": "16", 
+            "color": "8-Shade Gray", "preset": "veryslow", "tune": "stillimage",
+            "capture_mode": "Video & Picture", "screenshot_interval": "5",
             "save_dir": os.path.join(os.path.expanduser("~"), "Videos")
         }
 
